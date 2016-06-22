@@ -8,6 +8,9 @@ function startGame () {
   console.log(squares)
   for (var i = 0; i < squares.length; i++) {
     addListeners(squares[i])
+    addCellToBoard(squares[i])
+  } for (var j = 0; j < board.cells.length; j++) {
+    board.cells[j].surroundingMines = countSurroundingMines(board.cells[j])
   }
 }
 
@@ -18,6 +21,7 @@ function addListeners (element) {
 
 function showCell (evt) {
   evt.target.classList.remove('hidden')
+  showSurrounding(evt.target)
 }
 
 function markCell (evt) {
@@ -50,4 +54,14 @@ function addCellToBoard (cell) {
     isMine: cell.classList.contains('mine')
   }
   board.cells.push(newCell)
+}
+
+function countSurroundingMines (cell) {
+  var surroundingCells = getSurroundingCells(cell.row, cell.col)
+  var mineCount = 0
+  for (var i = 0; i < surroundingCells.length; i++) {
+    if (surroundingCells[i].isMine) {
+      mineCount++
+    }
+  } return mineCount
 }
