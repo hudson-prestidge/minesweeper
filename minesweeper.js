@@ -42,3 +42,12 @@ function getCol (element) {
     }
   }
 }
+
+function addCellToBoard (cell) {
+  var newCell = {
+    row: getRow(cell),
+    col: getCol(cell),
+    isMine: cell.classList.contains('mine')
+  }
+  board.cells.push(newCell)
+}
