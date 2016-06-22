@@ -33,3 +33,12 @@ function getRow (element) {
     }
   }
 }
+
+function getCol (element) {
+  for (var i = 0; i < element.classList.length; i++) {
+    var classNameParts = element.classList[i].split('-')
+    if (classNameParts[0] === 'col') {
+      return parseInt(classNameParts[1], 10)
+    }
+  }
+}
