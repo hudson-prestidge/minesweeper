@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', startGame)
+var board = {
+  cells: []
+}
 
 function startGame () {
   var squares = document.getElementsByClassName('board')[0].children
@@ -20,4 +23,13 @@ function showCell (evt) {
 function markCell (evt) {
   evt.preventDefault()
   evt.target.classList.toggle('marked')
+}
+
+function getRow (element) {
+  for (var i = 0; i < element.classList.length; i++) {
+    var classNameParts = element.classList[i].split('-')
+    if (classNameParts[0] === 'row') {
+      return parseInt(classNameParts[1], 10)
+    }
+  }
 }
