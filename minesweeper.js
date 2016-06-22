@@ -26,7 +26,9 @@ function showCell (evt) {
 
 function markCell (evt) {
   evt.preventDefault()
-  evt.target.classList.toggle('marked')
+  if (evt.target.classList.contains('hidden')) {
+    evt.target.classList.toggle('marked')
+  }
 }
 
 function getRow (element) {
