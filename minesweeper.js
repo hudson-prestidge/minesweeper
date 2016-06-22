@@ -22,6 +22,7 @@ function addListeners (element) {
 function showCell (evt) {
   evt.target.classList.remove('hidden')
   showSurrounding(evt.target)
+  checkForWin()
 }
 
 function markCell (evt) {
@@ -32,7 +33,7 @@ function markCell (evt) {
     if (board.cells[i].row === getRow(evt.target) && board.cells[i].col === getCol(evt.target)) {
       board.cells[i].isMarked = true
     }
-  }
+  } checkForWin()
 }
 
 function getRow (element) {
@@ -70,4 +71,16 @@ function countSurroundingMines (cell) {
       mineCount++
     }
   } return mineCount
+}
+
+function checkForWin () {
+  for (var i = 0; i < board.cells.length; i++) {
+    var currentCell = board.cells[i]
+    if (currentCell.isMine && !currentCell.isMarked) {
+      return
+    }
+  }
+  if (document.getElementsByClassName('hidden').length !== 0) {
+    return
+  } alert('you have won!')
 }
