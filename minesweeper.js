@@ -5,7 +5,6 @@ var board = {
 
 function startGame () {
   var squares = document.getElementsByClassName('board')[0].children
-  console.log(squares)
   for (var i = 0; i < squares.length; i++) {
     addListeners(squares[i])
     addCellToBoard(squares[i])
@@ -23,6 +22,8 @@ function showCell (evt) {
   evt.target.classList.remove('hidden')
   if (evt.target.classList.contains('mine')) {
     showAllMines()
+    alert("you have lost!")
+    resetGame()
   } else {
     showSurrounding(evt.target)
     checkForWin()
@@ -86,7 +87,8 @@ function checkForWin () {
   }
   if (document.getElementsByClassName('hidden').length !== 0) {
     return
-  } alert('you have won!')
+  } alert('You have won!')
+  resetGame()
 }
 
 function showAllMines () {
@@ -95,5 +97,15 @@ function showAllMines () {
     if (squares[i].classList.contains('mine')) {
       squares[i].classList.remove('hidden')
     }
+  }
+}
+
+function resetGame () {
+  var squares = document.getElementsByClassName('board')[0].children
+  for (var i = 0; i < squares.length; i++) {
+    squares[i].classList.add('hidden')
+    squares[i].classList.remove('marked')
+    squares[i].innerHTML = ''
+    board.cells[i].isProcessed = false
   }
 }
