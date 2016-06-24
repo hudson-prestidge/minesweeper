@@ -22,6 +22,7 @@ function showCell (evt) {
   
   evt.target.classList.remove('hidden')
   if (evt.target.classList.contains('mine')) {
+    document.getElementById('mine-sound').play()
     showAllMines()
     alert('You have lost!')
     resetGame()
@@ -95,7 +96,8 @@ function checkForWin () {
   }
   if (document.getElementsByClassName('hidden').length !== 0) {
     return
-  } alert('You have won!')
+  } document.getElementById('victory-sound').play()
+  alert('You have won!')
   resetGame()
 }
 
