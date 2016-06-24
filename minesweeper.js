@@ -19,14 +19,14 @@ function addListeners (element) {
 }
 
 function showCell (evt) {
-  var revealSound = document.getElementById("reveal-sound")
+  
   evt.target.classList.remove('hidden')
   if (evt.target.classList.contains('mine')) {
     showAllMines()
     alert('You have lost!')
     resetGame()
   } else {
-    revealSound.play()
+    document.getElementById("reveal-sound").play()
     showSurrounding(evt.target)
     checkForWin()
   }
@@ -34,7 +34,13 @@ function showCell (evt) {
 
 function markCell (evt) {
   evt.preventDefault()
-  evt.target.classList.toggle('marked')
+  if (evt.target.classList.contains('marked')) {
+    document.getElementById('unmark-sound').play()
+    evt.target.classList.remove('marked')
+  } else {
+    document.getElementById('mark-sound').play()
+    evt.target.classList.add('marked')
+  }
   evt.target.classList.toggle('hidden')
   for (var i = 0; i < board.cells.length; i++) {
     if (board.cells[i].row === getRow(evt.target) && board.cells[i].col === getCol(evt.target)) {
