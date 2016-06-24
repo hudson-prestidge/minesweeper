@@ -19,7 +19,7 @@ function addListeners (element) {
 }
 
 function showCell (evt) {
-  var revealSound = document.getElementbyID("reveal-sound")
+  var revealSound = document.getElementById("reveal-sound")
   evt.target.classList.remove('hidden')
   if (evt.target.classList.contains('mine')) {
     showAllMines()
