@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', startGame)
 var board = {
   cells: []
 }
-var numMines = 5
+var numMines = 4
 
 function startGame () {
   randomiseMines()
