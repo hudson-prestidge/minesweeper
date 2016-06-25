@@ -2,15 +2,11 @@ document.addEventListener('DOMContentLoaded', startGame)
 var board = {
   cells: []
 }
+var numMines = 4
 
 function startGame () {
-  var squares = document.getElementsByClassName('board')[0].children
-  for (var i = 0; i < squares.length; i++) {
-    addListeners(squares[i])
-    addCellToBoard(squares[i])
-  } for (var j = 0; j < board.cells.length; j++) {
-    board.cells[j].surroundingMines = countSurroundingMines(board.cells[j])
-  }
+  randomiseMines()
+  initBoard()
 }
 
 function addListeners (element) {
@@ -19,7 +15,6 @@ function addListeners (element) {
 }
 
 function showCell (evt) {
-  
   evt.target.classList.remove('hidden')
   if (evt.target.classList.contains('mine')) {
     document.getElementById('mine-sound').play()
@@ -112,10 +107,46 @@ function showAllMines () {
 
 function resetGame () {
   var squares = document.getElementsByClassName('board')[0].children
+  randomiseMines()
+  initBoard()
   for (var i = 0; i < squares.length; i++) {
     squares[i].classList.add('hidden')
     squares[i].classList.remove('marked')
     squares[i].innerHTML = ''
     board.cells[i].isProcessed = false
+  }
+}
+
+function randomiseMines () {
+  var squares = document.getElementsByClassName('board')[0].children
+  // remove all currently existing mines
+  for (var i = 0; i < squares.length; i++) {
+    squares[i].classList.remove('mine')
+  } for (var j = 0; j < numMines; j++) {
+    var squareCandidate = Math.floor(Math.random() * 25)
+
+    // check if the square contains a mine. if it doesn't, put a mine there. if it does, set the loop to run one more time so that we get the correct number of mines
+
+    if (squares[squareCandidate].classList.contains('mine')) {
+      j--
+    } else {
+      squares[squareCandidate].classList.add('mine')
+    }
+  }
+}
+
+function initBoard () {
+  // clear out possible existing board element
+
+  board.cells = []
+
+  // initialise board.cells, set listeners and surrounding mines
+
+  var squares = document.getElementsByClassName('board')[0].children
+  for (var i = 0; i < squares.length; i++) {
+    addListeners(squares[i])
+    addCellToBoard(squares[i])
+  } for (var j = 0; j < board.cells.length; j++) {
+    board.cells[j].surroundingMines = countSurroundingMines(board.cells[j])
   }
 }
