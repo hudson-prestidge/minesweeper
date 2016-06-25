@@ -9,6 +9,17 @@ body {
   justify-content: center;
 }
 
+.sidebar {
+  margin-right: 50px;
+}
+
+button {
+  width: 100px;
+  display: block;
+  margin-top: 50px;
+
+}
+
 .board {
   width: 420px;
   height: 420px;

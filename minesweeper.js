@@ -5,6 +5,9 @@ var board = {
 var numMines = 5
 
 function startGame () {
+  var smallButton = document.getElementById('smallButton')
+  var mediumButton = document.getElementById('mediumButton')
+  var largeButton = document.getElementById('largeButton')
   randomiseMines()
   initBoard()
 }
