@@ -33,12 +33,16 @@ function addListeners (element) {
 function showCell (evt) {
   evt.target.classList.remove('hidden')
   if (evt.target.classList.contains('mine')) {
-    document.getElementById('mine-sound').play()
+    var mineSound = document.getElementById('mine-sound')
+    mineSound.volume = 0.5
+    mineSound.play()
     showAllMines()
     alert('You have lost!')
     resetGame()
   } else {
-    document.getElementById('reveal-sound').play()
+    var revealSound = document.getElementById('reveal-sound')
+    revealSound.volume = 0.5
+    revealSound.play()
     showSurrounding(evt.target)
     checkForWin()
   }
@@ -47,10 +51,14 @@ function showCell (evt) {
 function markCell (evt) {
   evt.preventDefault()
   if (evt.target.classList.contains('marked')) {
-    document.getElementById('unmark-sound').play()
+    var unmarkSound = document.getElementById('unmark-sound')
+    unmarkSound.volume = 0.5
+    unmarkSound.play()
     evt.target.classList.remove('marked')
   } else {
-    document.getElementById('mark-sound').play()
+    var markSound = document.getElementById('mark-sound')
+    markSound.volume = 0.5
+    markSound.play()
     evt.target.classList.add('marked')
   }
   evt.target.classList.toggle('hidden')
@@ -107,7 +115,9 @@ function checkForWin () {
   }
   if (document.getElementsByClassName('hidden').length !== 0) {
     return
-  } document.getElementById('victory-sound').play()
+  } var victorySound = document.getElementById('victory-sound')
+  victorySound.volume = 0.5
+  victorySound.play()
   alert('You have won!')
   resetGame()
 }
