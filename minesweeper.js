@@ -55,6 +55,9 @@ function showCell (evt) {
 
 function markCell (evt) {
   evt.preventDefault()
+  // Manually removing/adding hidden rather than toggling it became necessary when marking and unmarking were handled differently and when marking revealed
+  // squares became no longer possible. This seems like clunky implementation but it gets the job done for now.
+
   // If the cell was already marked, play the unmark sound and remove the mark
   if (evt.target.classList.contains('marked')) {
     var unmarkSound = document.getElementById('unmark-sound')
