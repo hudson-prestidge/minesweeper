@@ -31,37 +31,48 @@ function addListeners (element) {
 }
 
 function showCell (evt) {
-  evt.target.classList.remove('hidden')
-  if (evt.target.classList.contains('mine')) {
-    var mineSound = document.getElementById('mine-sound')
-    mineSound.volume = 0.5
-    mineSound.play()
-    showAllMines()
-    alert('You have lost!')
-    resetGame()
-  } else {
-    var revealSound = document.getElementById('reveal-sound')
-    revealSound.volume = 0.5
-    revealSound.play()
-    showSurrounding(evt.target)
-    checkForWin()
+  // Should only affect the cell if it's hidden!
+  if (evt.target.classList.contains('hidden')) {
+    evt.target.classList.remove('hidden')
+    // if you reveal a mine, play the explode sound, alert the player they've lost, and reset the board
+    if (evt.target.classList.contains('mine')) {
+      var mineSound = document.getElementById('mine-sound')
+      mineSound.volume = 0.5
+      mineSound.play()
+      showAllMines()
+      alert('You have lost!')
+      resetGame()
+    } else {
+      // if you click a hidden cell that's not a mine, play the reveal sound and show the cell + surrounding cells (and check if the player has won)
+      var revealSound = document.getElementById('reveal-sound')
+      revealSound.volume = 0.5
+      revealSound.play()
+      showSurrounding(evt.target)
+      checkForWin()
+    }
   }
 }
 
 function markCell (evt) {
   evt.preventDefault()
+  // If the cell was already marked, play the unmark sound and remove the mark
   if (evt.target.classList.contains('marked')) {
     var unmarkSound = document.getElementById('unmark-sound')
     unmarkSound.volume = 0.5
     unmarkSound.play()
     evt.target.classList.remove('marked')
+    evt.target.classList.add('hidden')
   } else {
-    var markSound = document.getElementById('mark-sound')
-    markSound.volume = 0.5
-    markSound.play()
-    evt.target.classList.add('marked')
+    // You can only mark cells that are hidden!
+    if (evt.target.classList.contains('hidden')) {
+      // If the cell wasn't marked, play the mark sound and add a mark!
+      var markSound = document.getElementById('mark-sound')
+      markSound.volume = 0.5
+      markSound.play()
+      evt.target.classList.add('marked')
+      evt.target.classList.remove('hidden')
+    }
   }
-  evt.target.classList.toggle('hidden')
   for (var i = 0; i < board.cells.length; i++) {
     if (board.cells[i].row === getRow(evt.target) && board.cells[i].col === getCol(evt.target)) {
       board.cells[i].isMarked = true
