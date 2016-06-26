@@ -31,9 +31,10 @@ function addListeners (element) {
 }
 
 function showCell (evt) {
-  // Should only affect the cell if it's hidden!
-  if (evt.target.classList.contains('hidden')) {
+  // Should only affect the cell if it's hidden or marked
+  if (evt.target.classList.contains('hidden') || evt.target.classList.contains('marked')) {
     evt.target.classList.remove('hidden')
+    evt.target.classList.remove('marked')
     // if you reveal a mine, play the explode sound, alert the player they've lost, and reset the board
     if (evt.target.classList.contains('mine')) {
       var mineSound = document.getElementById('mine-sound')
