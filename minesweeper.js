@@ -3,11 +3,24 @@ var board = {
   cells: []
 }
 var numMines = 5
+var boardSize = 'small'
 
 function startGame () {
-  var smallButton = document.getElementById('smallButton')
-  var mediumButton = document.getElementById('mediumButton')
-  var largeButton = document.getElementById('largeButton')
+  // Adding event listeners to buttons to change board size. Could be condensed to one line per button but I feel like it's slightly clearer this way? Uses some memory
+  // for no real reason though. Using anonymous functions so that changeBoardSize() can be called with the appropriate parameter. There is likely a better way of doing
+  // this.
+  var smallButton = document.getElementById('small-button')
+  smallButton.addEventListener('click', function () {
+    changeBoardSize('small')
+  })
+  var mediumButton = document.getElementById('medium-button')
+  mediumButton.addEventListener('click', function () {
+    changeBoardSize('medium')
+  })
+  var largeButton = document.getElementById('large-button')
+  largeButton.addEventListener('click', function () {
+    changeBoardSize('large')
+  })
   randomiseMines()
   initBoard()
 }
@@ -25,7 +38,7 @@ function showCell (evt) {
     alert('You have lost!')
     resetGame()
   } else {
-    document.getElementById("reveal-sound").play()
+    document.getElementById('reveal-sound').play()
     showSurrounding(evt.target)
     checkForWin()
   }
@@ -122,13 +135,13 @@ function resetGame () {
 
 function randomiseMines () {
   var squares = document.getElementsByClassName('board')[0].children
-  // remove all currently existing mines
+  // Remove all currently existing mines.
   for (var i = 0; i < squares.length; i++) {
     squares[i].classList.remove('mine')
   } for (var j = 0; j < numMines; j++) {
-    var squareCandidate = Math.floor(Math.random() * 25)
+    var squareCandidate = Math.floor(Math.random() * (squares.length + 1))
 
-    // check if the square contains a mine. if it doesn't, put a mine there. if it does, set the loop to run one more time so that we get the correct number of mines
+    // Check if the square contains a mine. if it doesn't, put a mine there. if it does, set the loop to run one more time so that we get the correct number of mines.
 
     if (squares[squareCandidate].classList.contains('mine')) {
       j--
@@ -139,11 +152,11 @@ function randomiseMines () {
 }
 
 function initBoard () {
-  // clear out possible existing board element
+  // Clear out possible existing board element
 
   board.cells = []
 
-  // initialise board.cells, set listeners and surrounding mines
+  // Initialise board.cells, set listeners and surrounding mines
 
   var squares = document.getElementsByClassName('board')[0].children
   for (var i = 0; i < squares.length; i++) {
@@ -151,5 +164,71 @@ function initBoard () {
     addCellToBoard(squares[i])
   } for (var j = 0; j < board.cells.length; j++) {
     board.cells[j].surroundingMines = countSurroundingMines(board.cells[j])
+  }
+}
+
+function changeBoardSize (size) {
+  // Don't remake the board to the same size
+  if (boardSize === size) {
+    return
+  } else {
+    // Remove all the current html elements of the board
+    var myNode = document.getElementsByClassName('board')[0]
+    while (myNode.lastChild) {
+      myNode.removeChild(myNode.lastChild)
+    }
+    // Create an appropriate number of new html elements based on selected size, and add row-i and col-j to their classlist.
+    // This code does not seem very DRY, and is almost certainly doable in a much more clever way.
+    // In particular, assuming only these three cases, it's probably much easier to not delete the whole thing every time.
+    // This method is hopefully more open to expansion/revision though.
+    switch (size) {
+      case 'small':
+        boardSize = 'small'
+        var boardWidth = '420px'
+        numMines = 5
+        for (var i = 0; i < 5; i++) {
+          for (var j = 0; j < 5; j++) {
+            var div = document.createElement('div')
+            div.classList.add('row-' + i)
+            div.classList.add('col-' + j)
+            document.getElementsByClassName('board')[0].appendChild(div)
+          }
+        }
+        break
+      case 'medium':
+        boardSize = 'medium'
+        var boardWidth = '505px'
+        numMines = 7
+        for (var i = 0; i < 6; i++) {
+          for (var j = 0; j < 6; j++) {
+            var div = document.createElement('div')
+            div.classList.add('row-' + i)
+            div.classList.add('col-' + j)
+            document.getElementsByClassName('board')[0].appendChild(div)
+          }
+        }
+        break
+      case 'large':
+        boardSize = 'large'
+        var boardWidth = '590px'
+        numMines = 10
+        for (var i = 0; i < 7; i++) {
+          for (var j = 0; j < 7; j++) {
+            var div = document.createElement('div')
+            div.classList.add('row-' + i)
+            div.classList.add('col-' + j)
+            document.getElementsByClassName('board')[0].appendChild(div)
+          }
+        }
+        break
+      default:
+        console.log('invalid board size specified')
+    } // Increase board size appropriately. The board width and height should increase by ~83px per square taking into account margins, but 85 should do.
+    // As the board is always square, width = height for simplicity. You could instead of changing the style properties add classes to the board html element and then
+    // modify the css properties of those classes. That seems like a more elegant solution.
+    // then reset the game with the new board (iff it was changed)
+    document.getElementsByClassName('board')[0].style.width = boardWidth
+    document.getElementsByClassName('board')[0].style.height = boardWidth
+    resetGame()
   }
 }
