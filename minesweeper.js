@@ -139,7 +139,7 @@ function randomiseMines () {
   for (var i = 0; i < squares.length; i++) {
     squares[i].classList.remove('mine')
   } for (var j = 0; j < numMines; j++) {
-    var squareCandidate = Math.floor(Math.random() * (squares.length + 1))
+    var squareCandidate = Math.floor(Math.random() * (squares.length))
 
     // Check if the square contains a mine. if it doesn't, put a mine there. if it does, set the loop to run one more time so that we get the correct number of mines.
 
