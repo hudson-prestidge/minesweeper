@@ -196,7 +196,7 @@ function changeBoardSize (size) {
   // Don't remake the board to the same size
   if (boardSize === size) {
     return
-  } else {
+  } else if (confirm('Change board size? This will erase any progress on your current board!')) {
     // Remove all the current html elements of the board
     var myNode = document.getElementsByClassName('board')[0]
     while (myNode.lastChild) {
